@@ -1,0 +1,15 @@
+version: '3.4'
+
+services:
+  userapi:
+    image: ${DOCKER_REGISTRY-}userapi
+    build:
+      context: .
+      dockerfile: HuntApp\Dockerfile
+
+  weatherapi:
+    image: ${DOCKER_REGISTRY-}weatherapi
+    build:
+      context: .
+      dockerfile: WeatherApi\Dockerfile
+
