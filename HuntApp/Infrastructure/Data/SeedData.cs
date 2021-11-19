@@ -1,22 +1,10 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using UserApi.Entities;
 
 namespace UserApi.Infrastructure.Data
 {
     public static class SeedData
     {
-        //public static void PrepPopulation(IApplicationBuilder app)
-        //{
-        //    using (var serviceScope = app.ApplicationServices.CreateScope())
-        //    {
-        //        SeedDatabase(serviceScope.ServiceProvider.GetService<UserContext>());
-        //    }
-        //}
         public static void SeedDatabase(UserContext context)
         {
 
