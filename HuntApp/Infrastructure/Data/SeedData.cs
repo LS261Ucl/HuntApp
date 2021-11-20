@@ -34,5 +34,5 @@ namespace UserApi.Infrastructure.Data
 
         }
 
-    } 
+    }
 }

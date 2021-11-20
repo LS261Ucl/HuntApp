@@ -5,6 +5,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using UserApi.Infrastructure.Data;
+using UserApi.Infrastructure.Data.FakeData;
 
 namespace HuntApp
 {
