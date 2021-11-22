@@ -1,3 +1,4 @@
+using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -12,9 +13,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using UserApi.Application.Extensions;
 using UserApi.Application.Interfaces;
 using UserApi.Infrastructure.Data;
 using UserApi.Infrastructure.Data.Repositories;
+
 
 namespace HuntApp
 {
@@ -44,6 +47,10 @@ namespace HuntApp
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "HuntApp", Version = "v1" });
             });
+
+            services.AddMassTransitWithRabbitMq();
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -67,6 +74,7 @@ namespace HuntApp
                 endpoints.MapControllers();
             });
 
+         
             
         }
     }
