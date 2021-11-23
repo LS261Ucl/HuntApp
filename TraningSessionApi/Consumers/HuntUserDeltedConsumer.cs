@@ -1,15 +1,14 @@
 ﻿using MassTransit;
 using System.Threading.Tasks;
-using UserApi.Application.Interfaces;
-using UserApi.Commands;
-using UserApi.Entities;
+using TraningSessionApi.Application.Interfaces;
+using TraningSessionApi.Commands;
+using TraningSessionApi.Entities;
 
-namespace UserApi.Consumers
+namespace TraningSessionApi.Consumers
 {
     public class HuntUserDeletedConsumer : IConsumer<HuntUserDeleted>
     {
         private readonly IGenericRepository<User> _userRepository;
-
         public HuntUserDeletedConsumer(IGenericRepository<User> userRepository)
         {
             _userRepository = userRepository;
@@ -20,7 +19,7 @@ namespace UserApi.Consumers
 
             var user = await _userRepository.GetAsync(x => x.Id == message.Id);
 
-            if(user != null)
+            if (user != null)
             {
                 return;
             }

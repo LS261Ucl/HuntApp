@@ -1,6 +1,6 @@
 ﻿
+namespace TraningSessionApi.Entities
 
-namespace WeatherApi.Entities
 {
     public class Weather : BaseEntity
     {

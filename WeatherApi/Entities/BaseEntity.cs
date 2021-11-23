@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace WeatherApi.Entities
 {
-    public class BaseEntitity
+    public class BaseEntity
     {
         public Guid Id { get; set; }
     }

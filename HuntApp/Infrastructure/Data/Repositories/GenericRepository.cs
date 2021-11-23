@@ -10,7 +10,7 @@ using UserApi.Entities;
 
 namespace UserApi.Infrastructure.Data.Repositories
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntitie
+    public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     {
         private readonly UserContext _context;
 

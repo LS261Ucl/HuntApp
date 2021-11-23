@@ -8,13 +8,12 @@ using UserApi.Entities;
 
 namespace UserApi.Application.Interfaces
 {
-    public interface IGenericRepository<T> where T : BaseEntitie
+    public interface IGenericRepository<T> where T : BaseEntity
     {
         Task<T> GetAsync(Expression<Func<T, bool>> criteria, Func<IQueryable<T>, IIncludableQueryable<T, object>> includes = null);
         Task<IReadOnlyList<T>> GetAllAsync(Expression<Func<T, bool>> criteria = null, Func<IQueryable<T>,
             IIncludableQueryable<T, object>> includes = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null);
-
-        
+    
         Task<bool> CreateAsync(T entity);
         Task<bool> UpdateAsync(T entity);
         Task<string[]> UpdateConcurrentlyAsync(T entity);

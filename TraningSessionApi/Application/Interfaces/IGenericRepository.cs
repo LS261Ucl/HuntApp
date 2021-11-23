@@ -8,7 +8,7 @@ using TraningSessionApi.Entities;
 
 namespace TraningSessionApi.Application.Interfaces
 {
-    public interface IGenericRepository<T> where T : BaseEnitity
+    public interface IGenericRepository<T> where T : BaseEntity
     {
         Task<T> GetAsync(Expression<Func<T, bool>> criteria, Func<IQueryable<T>, IIncludableQueryable<T, object>> includes = null);
         Task<IReadOnlyList<T>> GetAllAsync(Expression<Func<T, bool>> criteria = null, Func<IQueryable<T>,

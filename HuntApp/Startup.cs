@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using UserApi.Application.Extensions;
 using UserApi.Application.Interfaces;
 using UserApi.Infrastructure.Data;
+using UserApi.Infrastructure.Data.FakeData;
 using UserApi.Infrastructure.Data.Repositories;
 
 
@@ -48,7 +49,7 @@ namespace HuntApp
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "HuntApp", Version = "v1" });
             });
 
-            services.AddMassTransitWithRabbitMq();
+        //    services.AddMassTransitWithRabbitMq();
 
 
         }
@@ -74,6 +75,7 @@ namespace HuntApp
                 endpoints.MapControllers();
             });
 
+            SeedData.PrepPopulation(app);
          
             
         }

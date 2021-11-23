@@ -1,12 +1,11 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using MassTransit;
+﻿using MassTransit;
 using Microsoft.Extensions.Configuration;
-using UserApi.Consumers;
+using Microsoft.Extensions.DependencyInjection;
+using TraningSessionApi.Consumers;
 
-
-namespace UserApi.Application.Extensions
+namespace TraningSessionApi.Application.Extensions
 {
-    public static class MassTransitExtensions
+    public static class MassTrainsitExtension
     {
         public static IServiceCollection AddMassTransitWithRabbitMq(this IServiceCollection services)
         {
@@ -17,6 +16,9 @@ namespace UserApi.Application.Extensions
                     configure.AddConsumer<HuntUserDeletedConsumer>();
                     configure.AddConsumer<HuntWeaponCreatedConsumer>();
                     configure.AddConsumer<HuntWeaponDeletedConsumer>();
+                    configure.AddConsumer<HuntSessionCreatedConsumer>();
+                    configure.AddConsumer<HuntSessionDeletedConsumer>();
+
 
 
                     configure.UsingRabbitMq((context, cfg) =>
@@ -24,10 +26,11 @@ namespace UserApi.Application.Extensions
                         //var configuration = context.GetRequiredService<IConfiguration>();
                         //string rabbitMqHost = configuration.GetValue<string>("RabbitMq");
                         //cfg.Host(rabbitMqHost);
-                        cfg.Host("amqp://guest:guest@localhost:15672");
-                        cfg.ConfigureEndpoints(context);
 
                         //cfg.ConfigureEndpoints(context);
+
+                        cfg.Host("amqp://guest:guest@localhost:15672");
+                        cfg.ConfigureEndpoints(context);
                     });
                 });
 

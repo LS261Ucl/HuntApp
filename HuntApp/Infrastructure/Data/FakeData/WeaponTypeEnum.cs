@@ -5,14 +5,10 @@ using System.Threading.Tasks;
 
 namespace UserApi.Infrastructure.Data.FakeData
 {
-    public static class FakeWeapon
+    public enum WeaponTypeEnum
     {
-       public static void SeedWeaponsData(UserContext context)
-        {
-            
-
-           
-
-        }
+        SideBySide,
+        OverUnder,
+        HalvAutomatisk
     }
 }
