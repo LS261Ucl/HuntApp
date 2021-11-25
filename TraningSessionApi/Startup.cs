@@ -67,6 +67,8 @@ namespace TraningSessionApi
                 endpoints.MapControllers();
             });
 
+            SeedData.PrepPopulation(app);
+
            
         }
     }
