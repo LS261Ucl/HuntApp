@@ -1,32 +1,32 @@
-﻿using MassTransit;
-using System.Threading.Tasks;
-using UserApi.Application.Interfaces;
-using UserApi.Commands;
-using UserApi.Entities;
+﻿//using MassTransit;
+//using System.Threading.Tasks;
+//using UserApi.Application.Interfaces;
+//using UserApi.Commands;
+//using UserApi.Entities;
 
-namespace UserApi.Consumers
-{
-    public class HuntWeaponDeletedConsumer : IConsumer<HuntWeaponDeleted>
-    {
-        private readonly IGenericRepository<Weapon> _weaponRepository;
+//namespace UserApi.Consumers
+//{
+//    public class HuntWeaponDeletedConsumer : IConsumer<HuntWeaponDeleted>
+//    {
+//        private readonly IGenericRepository<Weapon> _weaponRepository;
 
-        public HuntWeaponDeletedConsumer(IGenericRepository<Weapon> weaponRepository)
-        {
-            _weaponRepository = weaponRepository;
-        }
-        public async Task Consume(ConsumeContext<HuntWeaponDeleted> context)
-        {
+//        public HuntWeaponDeletedConsumer(IGenericRepository<Weapon> weaponRepository)
+//        {
+//            _weaponRepository = weaponRepository;
+//        }
+//        public async Task Consume(ConsumeContext<HuntWeaponDeleted> context)
+//        {
 
-            var message = context.Message;
+//            var message = context.Message;
 
-            var weapon = await _weaponRepository.GetAsync(x => x.Id == message.Id);
+//            var weapon = await _weaponRepository.GetAsync(x => x.Id == message.Id);
 
-            if (weapon != null)
-            {
-                return;
-            }
+//            if (weapon != null)
+//            {
+//                return;
+//            }
 
-            await _weaponRepository.DeleteAsync(message.Id);
-        }
-    }
-}
+//            await _weaponRepository.DeleteAsync(message.Id);
+//        }
+//    }
+//}

@@ -11,57 +11,30 @@ namespace UserApi.Infrastructure.Data
 {
     public static class SeedData
     {
-        //public static void SeedDatabase(UserContext context)
+        //public static void PrepPopulation(IApplicationBuilder app)
         //{
-
-        //    if (!context.Users.Any() && !context.Weapons.Any())
+        //    using(var serviceScope = app.ApplicationServices.CreateScope())
         //    {
-        //        var user1 =
-        //            new User() { Name = "Thor Odiensøn", Email = "to@gmail.com", PhoneNumber = "11223344" };
-        //        var user2 =
-        //            new User() { Name = "Dot Net", Email = "ms@gmail.com", PhoneNumber = "44556677" };
-        //        var user3 =
-        //            new User() { Name = "Apollo Zeus", Email = "ae@gmail.com", PhoneNumber = "12345678" };
-
-        //        context.Users.AddRange(user1, user2, user3);
-
-        //        var weapon1 =
-        //              new Weapon() { Type = "Sidebyside", Caliber = "12" };
-        //        var weapon2 = new Weapon() { Type = "Singel", Caliber = "13" };
-        //        var weapon3 = new Weapon() { Type = "Semi", Caliber = "12" };
-
-        //        context.Weapons.AddRange(weapon1, weapon2, weapon3);
-
-
-
-        //        context.SaveChanges();
-
+        //        SeedDatabase(serviceScope.ServiceProvider.GetService<UserContext>());
         //    }
-
         //}
-
-        public static void PrepPopulation(IApplicationBuilder app)
-        {
-            using(var serviceScope = app.ApplicationServices.CreateScope())
-            {
-                SeedDatabase(serviceScope.ServiceProvider.GetService<UserContext>());
-            }
-        }
-        private static void SeedDatabase(UserContext context)
+        public static void SeedDatabase(UserContext context)
         {
 
-            List<User> users = new List<User>();
-            List<Weapon> weapons = new List<Weapon>();
-            for (int i = 0; i < 5; i++)
+            //List<User> users = new List<User>();
+            //List<Weapon> weapons = new List<Weapon>();
+            //used for add range, but did not work
+            for (int i = 0; i < 1; i++)
             {
+                var id = Guid.NewGuid(); 
                 var userId = Guid.NewGuid();
                 var UserFaker = new Faker<User>()
                 .RuleFor(x => x.Name, x => x.Person.FullName)
                 .RuleFor(x => x.Email, x => x.Person.Email)
-                .RuleFor(x => x.Id, x => userId)
+                //.RuleFor(x => x.UserId, x => userId)
                 .RuleFor(x => x.PhoneNumber, x => x.Phone.Locale);
                 var userFake = JsonSerializer.Serialize(UserFaker.Generate());
-                users.Add(UserFaker);
+                context.Users.Add(UserFaker);
 
 
                 //random number 1-4 
@@ -73,24 +46,24 @@ namespace UserApi.Infrastructure.Data
                 {
                     var weaponType = Faker.Enum.Random<WeaponTypeEnum>();
                     var caliber = Faker.Enum.Random<CaliberEnum>();
+
                     if (y == 0)
                     {
                         favorit = true;
                     }
+
                     var userWeapons = new Faker<Weapon>()
                     .RuleFor(j => j.Type, j => weaponType.ToString())
                     .RuleFor(j => j.Caliber, j => ((int)caliber).ToString())
-                    .RuleFor(j => j.Favorit, j => favorit)
-                    .RuleFor(j => j.Id, j => Guid.NewGuid())
-                    .RuleFor(j => j.UserId, j => userId);
+                    .RuleFor(j => j.Favorit, j => favorit)                    
+                    .RuleFor(j => j.UserId, j => id);
                     var UserWeapons = JsonSerializer.Serialize(userWeapons.Generate());
                     Console.WriteLine(UserWeapons);
-                    weapons.Add(userWeapons);
-
+                    context.Weapons.Add(userWeapons);
+                    context.SaveChanges();
 
                 }
-                context.Users.AddRange(users);
-                context.Weapons.AddRange(weapons);
+                int countWeapons = context.Weapons.Count();
 
                 context.SaveChanges();
 

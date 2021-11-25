@@ -13,6 +13,12 @@ namespace UserApi.Infrastructure.Data
         public DbSet<User> Users  { get; set; }
         public DbSet<Weapon> Weapons { get; set; }
 
+        //lave en modelbuilder til at forbinde våben på bruger via UserId???? kan det løse udfordringen.
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>().ToTable("Users");
+            modelBuilder.Entity<Weapon>().ToTable("Weapons");
+        }
     }
 }

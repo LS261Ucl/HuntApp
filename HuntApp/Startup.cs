@@ -75,7 +75,7 @@ namespace HuntApp
                 endpoints.MapControllers();
             });
 
-            SeedData.PrepPopulation(app);
+            //SeedData.PrepPopulation(app);
          
             
         }

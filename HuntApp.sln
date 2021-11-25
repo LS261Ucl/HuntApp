@@ -21,6 +21,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hunt.Gateway", "..\Hunt.Gat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleAppTester", "..\ConsoleAppTester\ConsoleAppTester.csproj", "{6AF0B84F-6F83-4664-8190-F3BBF79E904E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{2E9D6CF5-1DAC-4D9D-8327-8FB6D08ED145}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hunt", "..\Hunt\Hunt.csproj", "{29E5E7DD-9657-4261-A99E-B7648E4059A9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +59,10 @@ Global
 		{6AF0B84F-6F83-4664-8190-F3BBF79E904E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6AF0B84F-6F83-4664-8190-F3BBF79E904E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6AF0B84F-6F83-4664-8190-F3BBF79E904E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29E5E7DD-9657-4261-A99E-B7648E4059A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29E5E7DD-9657-4261-A99E-B7648E4059A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29E5E7DD-9657-4261-A99E-B7648E4059A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29E5E7DD-9657-4261-A99E-B7648E4059A9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -65,6 +73,7 @@ Global
 		{E1FE0FCD-06DB-4160-B636-33EA15D16407} = {970012D8-ECD5-40E6-8F8F-0AE978212FC7}
 		{F2B2E0DF-27B7-412A-82D4-A02CDCDF8FFB} = {970012D8-ECD5-40E6-8F8F-0AE978212FC7}
 		{321152E0-261C-458C-9612-794FC5CE2421} = {4574A653-4368-4C47-BA2A-CB2D8222A3F4}
+		{29E5E7DD-9657-4261-A99E-B7648E4059A9} = {2E9D6CF5-1DAC-4D9D-8327-8FB6D08ED145}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F6D78517-CD39-47E0-A3EF-03202F18214F}

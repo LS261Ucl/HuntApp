@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -9,8 +8,6 @@ using UserApi.Application.Dtos.User;
 using UserApi.Application.Interfaces;
 using UserApi.Application.Services;
 using UserApi.Entities;
-using UserApi.Infrastructure.Data;
-using UserApi.Infrastructure.Data.Repositories;
 
 namespace UserApi.Controllers
 {

@@ -19,7 +19,7 @@ namespace UserApi.Infrastructure.Data.FakeData
                 var faker = new Faker<User>()
                 .RuleFor(x => x.Name, x => x.Person.FullName)
                 .RuleFor(x => x.Email, x => x.Person.Email)
-                .RuleFor(x=> x.Id, x=> userId)
+                .RuleFor(x=> x.UserId, x=> userId)
                 .RuleFor(x => x.PhoneNumber, x => x.Phone.Locale);
                 var userFake = JsonSerializer.Serialize(faker.Generate());
                 users.Add(faker);
@@ -42,7 +42,7 @@ namespace UserApi.Infrastructure.Data.FakeData
                     .RuleFor(j => j.Type, j => weaponType.ToString())
                     .RuleFor(j => j.Caliber, j => ((int)caliber).ToString())
                     .RuleFor(j => j.Favorit, j => favorit)
-                    .RuleFor(j => j.Id, j => Guid.NewGuid())
+                    
                     .RuleFor(j => j.UserId, j => userId);
                     var UserWeapons = JsonSerializer.Serialize(fakerWeapon.Generate());
                     Console.WriteLine(UserWeapons);
