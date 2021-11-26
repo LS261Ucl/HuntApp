@@ -5,20 +5,21 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
+using System.Threading;
 using UserApi.Entities;
 
 namespace UserApi.Infrastructure.Data
 {
     public static class SeedData
     {
-        //public static void PrepPopulation(IApplicationBuilder app)
-        //{
-        //    using(var serviceScope = app.ApplicationServices.CreateScope())
-        //    {
-        //        SeedDatabase(serviceScope.ServiceProvider.GetService<UserContext>());
-        //    }
-        //}
-        public static void SeedDatabase(UserContext context)
+        public static void PrepPopulation(IApplicationBuilder app)
+        {
+            using (var serviceScope = app.ApplicationServices.CreateScope())
+            {
+                SeedDatabase(serviceScope.ServiceProvider.GetService<UserContext>());
+            }
+        }
+        private static void SeedDatabase(UserContext context)
         {
 
             //List<User> users = new List<User>();
@@ -29,9 +30,10 @@ namespace UserApi.Infrastructure.Data
                 var id = Guid.NewGuid(); 
                 var userId = Guid.NewGuid();
                 var UserFaker = new Faker<User>()
+                .RuleFor(x => x.Id, x => id)
                 .RuleFor(x => x.Name, x => x.Person.FullName)
                 .RuleFor(x => x.Email, x => x.Person.Email)
-                //.RuleFor(x => x.UserId, x => userId)
+                .RuleFor(x => x.UserId, x => userId)
                 .RuleFor(x => x.PhoneNumber, x => x.Phone.Locale);
                 var userFake = JsonSerializer.Serialize(UserFaker.Generate());
                 context.Users.Add(UserFaker);
@@ -55,12 +57,13 @@ namespace UserApi.Infrastructure.Data
                     var userWeapons = new Faker<Weapon>()
                     .RuleFor(j => j.Type, j => weaponType.ToString())
                     .RuleFor(j => j.Caliber, j => ((int)caliber).ToString())
-                    .RuleFor(j => j.Favorit, j => favorit)                    
+                    .RuleFor(j => j.Favorit, j => favorit)
                     .RuleFor(j => j.UserId, j => id);
                     var UserWeapons = JsonSerializer.Serialize(userWeapons.Generate());
                     Console.WriteLine(UserWeapons);
                     context.Weapons.Add(userWeapons);
                     context.SaveChanges();
+                    Thread.Sleep(10);
 
                 }
                 int countWeapons = context.Weapons.Count();

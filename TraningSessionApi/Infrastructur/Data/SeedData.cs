@@ -3,8 +3,8 @@ using Bogus;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
+using System.Threading;
 using TraningSessionApi.Entities;
 
 namespace TraningSessionApi.Infrastructur.Data
@@ -12,18 +12,18 @@ namespace TraningSessionApi.Infrastructur.Data
     public class SeedData
     {
 
-        public static void PrepPopulation(IApplicationBuilder app)
-        {
-            using (var serviceScope = app.ApplicationServices.CreateScope())
-            {
-                SeedDatabase(serviceScope.ServiceProvider.GetService<SessionContext>());
-            }
-        }
-        private static void SeedDatabase(SessionContext context)
+        //public static void PrepPopulation(IApplicationBuilder app)
+        //{
+        //    using (var serviceScope = app.ApplicationServices.CreateScope())
+        //    {
+        //        SeedDatabase(serviceScope.ServiceProvider.GetService<SessionContext>());
+        //    }
+        //}
+        public static void SeedDatabase(SessionContext context)
         {
             var claypigions = Faker.Enum.Random<ClaypigionsEnum>();
             var duble = Faker.RandomNumber.Next(1, 2);
-            var numberOfShorts = Faker.RandomNumber.Next(24, 60);
+            var numberOfShorts = Faker.RandomNumber.Next(40, 88);
             var howWasPigonHit = Faker.Enum.Random<HowWasPigonHitEnum>();
 
             List<Session> session = new List<Session>();
@@ -36,6 +36,8 @@ namespace TraningSessionApi.Infrastructur.Data
 
                 var sessionFaker = JsonSerializer.Serialize(fakeSession);
                 session.Add(fakeSession);
+                Thread.Sleep(20);
+                
 
             }
 

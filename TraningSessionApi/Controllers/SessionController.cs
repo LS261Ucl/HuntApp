@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -18,12 +19,14 @@ namespace TraningSessionApi.Controllers
         private readonly IGenericRepository<Session> _repository;
         private readonly IMapper _mapper;
         private readonly ILogger<SessionController> _logger;
+        private readonly IPublishEndpoint _publishEndpoint;
 
-        public SessionController(IGenericRepository<Session> repository, IMapper mapper, ILogger<SessionController> logger)
+        public SessionController(IGenericRepository<Session> repository, IMapper mapper, ILogger<SessionController> logger, IPublishEndpoint publishEndpoint)
         {
             _repository = repository;
             _mapper = mapper;
             _logger = logger;
+            _publishEndpoint = publishEndpoint;
         }
 
         [HttpGet]

@@ -5,7 +5,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using UserApi.Infrastructure.Data;
-using UserApi.Infrastructure.Data.FakeData;
 
 namespace HuntApp
 {
@@ -15,22 +14,22 @@ namespace HuntApp
         {
             var host = CreateHostBuilder(args).Build();
 
-            using (var scope = host.Services.CreateScope())
-            {
-                var services = scope.ServiceProvider;
+            //using (var scope = host.Services.CreateScope())
+            //{
+            //    var services = scope.ServiceProvider;
 
-                try
-                {
-                    var context = services.GetRequiredService<UserContext>();
-                    context.Database.Migrate();                 
-                    SeedData.SeedDatabase(context);
-                }
-                catch (Exception ex)
-                {
-                    var logger = services.GetRequiredService<ILogger<Program>>();
-                    logger.LogError(ex, "Error occured seeding the Database");
-                }
-            }
+            //    try
+            //    {
+            //        var context = services.GetRequiredService<UserContext>();
+            //        context.Database.Migrate();                 
+            //        SeedData.SeedDatabase(context);
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        var logger = services.GetRequiredService<ILogger<Program>>();
+            //        logger.LogError(ex, "Error occured seeding the Database");
+            //    }
+            //}
             host.Run();
         }
 

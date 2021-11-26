@@ -28,13 +28,13 @@ namespace TraningSessionApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddDbContext<SessionContext>(opt => opt.UseInMemoryDatabase("InMem"));
-
+            
             services.AddDbContext<SessionContext>(opt =>
             {
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
 
+//            services.AddMassTransitWithRabbitMq();
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddControllers();
@@ -67,7 +67,7 @@ namespace TraningSessionApi
                 endpoints.MapControllers();
             });
 
-            SeedData.PrepPopulation(app);
+//            SeedData.PrepPopulation(app);
 
            
         }

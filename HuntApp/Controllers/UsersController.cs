@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -18,12 +19,14 @@ namespace UserApi.Controllers
         private readonly IGenericRepository<User> _userRepository;
         private readonly IMapper _mapper;
         private readonly ILogger<UsersController> _logger;
+        private readonly IPublishEndpoint _publishEndpoint;
 
-        public UsersController(IGenericRepository<User> repository, IMapper mapper, ILogger<UsersController> logger)
+        public UsersController(IGenericRepository<User> repository, IMapper mapper, ILogger<UsersController> logger, IPublishEndpoint publishEndpoint)
         {
             _userRepository = repository;
             _mapper = mapper;
             _logger = logger;
+            _publishEndpoint = publishEndpoint;
         }
 
         [HttpGet]

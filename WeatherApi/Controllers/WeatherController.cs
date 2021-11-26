@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
+using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using WeatherApi.Application.Dtos;
 using WeatherApi.Application.Interface;
+using WeatherApi.Commands;
 using WeatherApi.Entities;
 
 namespace WeatherApi.Controllers
@@ -19,12 +19,14 @@ namespace WeatherApi.Controllers
         private readonly IGenericRepository<Weather> _repository;
         private readonly IMapper _mapper;
         private readonly ILogger<WeatherController> _logger;
+        private readonly IPublishEndpoint _publishEndpoint;
 
-        public WeatherController(IGenericRepository<Weather> repository, IMapper mapper, ILogger<WeatherController> logger)
+        public WeatherController(IGenericRepository<Weather> repository, IMapper mapper, ILogger<WeatherController> logger, IPublishEndpoint publishEndpoint)
         {
             _repository = repository;
             _mapper = mapper;
             _logger = logger;
+            _publishEndpoint = publishEndpoint;
         }
 
         [HttpGet]
@@ -62,6 +64,7 @@ namespace WeatherApi.Controllers
                 return BadRequest();
 
             }
+           // await _publishEndpoint.Publish(new HuntWeatherCreated(weather.Id, weather.Rain, weather.Wind, weather.Sun));
 
             return CreatedAtAction(nameof(GetWeather), new { id = weather.Id }, _mapper.Map<ReadWeatherDto>(weather));
         }
