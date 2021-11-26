@@ -18,19 +18,18 @@ namespace TraningSessionApi.Application.Extensions
                     configure.AddConsumer<HuntWeaponDeletedConsumer>();
                     configure.AddConsumer<HuntSessionCreatedConsumer>();
                     configure.AddConsumer<HuntSessionDeletedConsumer>();
-
+                    configure.AddConsumer<HuntWeatherCreatedConsumer>();
+                    
 
 
                     configure.UsingRabbitMq((context, cfg) =>
                     {
-                        //var configuration = context.GetRequiredService<IConfiguration>();
-                        //string rabbitMqHost = configuration.GetValue<string>("RabbitMq");
-                        //cfg.Host(rabbitMqHost);
+                        var configuration = context.GetRequiredService<IConfiguration>();
+                        string rabbitMqHost = configuration.GetValue<string>("RabbitMq");
+                        cfg.Host(rabbitMqHost);
 
-                        //cfg.ConfigureEndpoints(context);
-
-                        cfg.Host("amqp://guest:guest@localhost:15672");
                         cfg.ConfigureEndpoints(context);
+
                     });
                 });
 

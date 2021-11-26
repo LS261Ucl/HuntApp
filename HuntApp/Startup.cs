@@ -10,6 +10,7 @@ using System;
 using System.Reflection;
 using UserApi.Application.Interfaces;
 using UserApi.Application.Services;
+using UserApi.Consumer;
 using UserApi.Infrastructure.Data;
 using UserApi.Infrastructure.Data.Repositories;
 
@@ -36,7 +37,23 @@ namespace HuntApp
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
 
-           
+            services.AddMassTransit(x =>
+            {
+                x.AddConsumer<HuntUserCreatedConsumer>();
+                x.AddConsumer<HuntUserDeltedConsumer>();
+                x.AddConsumer<HuntWeaponCreatedConsumer>();
+                x.AddConsumer<HuntWeaponDeletedConsumer>();
+                x.UsingRabbitMq((context, Config) =>
+                {
+                    var configuration = context.GetRequiredService<IConfiguration>();
+                    string rabbitMQHost = configuration.GetValue<string>("RabbitMq");
+                    Config.Host(rabbitMQHost);
+                    Config.ConfigureEndpoints(context);
+
+                });
+            });
+
+            services.AddMassTransitHostedService();
 
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

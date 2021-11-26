@@ -53,12 +53,12 @@ namespace WeatherApi
            {
                x.AddConsumer<HuntWeatherCreatedConsumer>();
                x.AddConsumer<HuntWeatherUpdatedConsumer>();
-               x.UsingRabbitMq((Context, Config) =>
+               x.UsingRabbitMq((context, Config) =>
                {
-                   var configuration = Context.GetRequiredService<IConfiguration>();
+                   var configuration = context.GetRequiredService<IConfiguration>();
                    string rabbitMQHost = configuration.GetValue<string>("RabbitMq");
                    Config.Host(rabbitMQHost);
-                   Config.ConfigureEndpoints(Context);
+                   Config.ConfigureEndpoints(context);
 
                });
            });
