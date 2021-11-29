@@ -25,7 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hunt", "..\Hunt\Hunt.csproj
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MachineLearning", "MachineLearning", "{68AEFFDC-D912-4A7C-9FE7-FEF2990B22DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenerealUi", "..\GenerealUi\GenerealUi.csproj", "{D23A0C73-6B6B-49D6-BBCF-7E3FF3E2CB44}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GenerealUi", "..\GenerealUi\GenerealUi.csproj", "{D23A0C73-6B6B-49D6-BBCF-7E3FF3E2CB44}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
