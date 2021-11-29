@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
+using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -9,8 +9,6 @@ using UserApi.Application.Dtos.User;
 using UserApi.Application.Interfaces;
 using UserApi.Application.Services;
 using UserApi.Entities;
-using UserApi.Infrastructure.Data;
-using UserApi.Infrastructure.Data.Repositories;
 
 namespace UserApi.Controllers
 {
@@ -18,21 +16,23 @@ namespace UserApi.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly IGenericRepository<User> _repository;
+        private readonly IGenericRepository<User> _userRepository;
         private readonly IMapper _mapper;
         private readonly ILogger<UsersController> _logger;
+        private readonly IPublishEndpoint _publishEndpoint;
 
-        public UsersController(IGenericRepository<User> repository, IMapper mapper, ILogger<UsersController> logger)
+        public UsersController(IGenericRepository<User> repository, IMapper mapper, ILogger<UsersController> logger, IPublishEndpoint publishEndpoint)
         {
-            _repository = repository;
+            _userRepository = repository;
             _mapper = mapper;
             _logger = logger;
+            _publishEndpoint = publishEndpoint;
         }
 
         [HttpGet]
         public async Task<ActionResult<IReadOnlyList<ReadUserDto>>> GetAllUser(string orderBy)
         {
-            var users = await _repository.GetAllAsync(orderBy: new UserOrderBy().Sorting(orderBy));
+            var users = await _userRepository.GetAllAsync(orderBy: new UserOrderBy().Sorting(orderBy));
 
             return Ok(_mapper.Map<IReadOnlyList<ReadUserDto>>(users));
         }
@@ -40,7 +40,7 @@ namespace UserApi.Controllers
         [HttpGet("{id:guid}", Name = "GetUser")]
         public async Task<ActionResult<ReadUserDto>> GetUser(Guid id)
         {
-            var userEntity = await _repository.GetAsync(x => x.Id == id);
+            var userEntity = await _userRepository.GetAsync(x => x.Id == id);
 
             if(userEntity == null)
             {
@@ -56,7 +56,7 @@ namespace UserApi.Controllers
         {
             var user = _mapper.Map<User>(createUserDto);
 
-            bool created = await _repository.CreateAsync(user);
+            bool created = await _userRepository.CreateAsync(user);
 
             if(!created)
             {
@@ -71,7 +71,7 @@ namespace UserApi.Controllers
         [HttpDelete("{id:guid}")]
         public async Task<ActionResult> DeletUser(Guid id)
         {
-            bool deleted = await _repository.DeleteAsync(id);
+            bool deleted = await _userRepository.DeleteAsync(id);
 
             if(!deleted)
             {

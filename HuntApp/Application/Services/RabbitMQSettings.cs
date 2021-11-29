@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WeatherApi.Entities
+namespace UserApi.Application.Services
 {
-    public class BaseEntitity
+    public class RabbitMQSettings
     {
-        public Guid Id { get; set; }
+        public string Host { get; init; }
     }
 }

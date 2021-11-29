@@ -5,9 +5,28 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MassTransit" Version="7.2.4" />
+    <PackageReference Include="MassTransit.AspNetCore" Version="7.2.4" />
+    <PackageReference Include="MassTransit.Extensions.DependencyInjection" Version="7.2.4" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.11" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.11" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.12">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Hunt.Gateway\Hunt.Gateway.csproj" />
+    <ProjectReference Include="..\HuntApp\UserApi.csproj" />
+    <ProjectReference Include="..\TraningSessionApi\TraningSessionApi.csproj" />
+    <ProjectReference Include="..\WeatherApi\WeatherApi.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="GeneralUI\DropDown\" />
+    <Folder Include="GeneralUI\Validation\" />
   </ItemGroup>
 
 </Project>

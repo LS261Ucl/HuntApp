@@ -11,5 +11,13 @@ namespace WeatherApi.Infrastructure.Data
         }
 
         public DbSet<Weather> Weathers { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Weather>().ToTable("Weather");
+            
+        }
+
+
     }
 }

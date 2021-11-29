@@ -9,7 +9,7 @@ using WeatherApi.Entities;
 
 namespace WeatherApi.Application.Interface
 {
-    public interface IGenericRepository<T> where T : BaseEntitity
+    public interface IGenericRepository<T> where T : BaseEntity
     {
         Task<T> GetAsync(Expression<Func<T, bool>> criteria, Func<IQueryable<T>, IIncludableQueryable<T, object>> includes = null);
         Task<IReadOnlyList<T>> GetAllAsync(Expression<Func<T, bool>> criteria = null, Func<IQueryable<T>,

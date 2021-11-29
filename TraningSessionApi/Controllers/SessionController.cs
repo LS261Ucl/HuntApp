@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
+using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using TraningSessionApi.Application.Dtos;
 using TraningSessionApi.Application.Interfaces;
@@ -20,20 +19,22 @@ namespace TraningSessionApi.Controllers
         private readonly IGenericRepository<Session> _repository;
         private readonly IMapper _mapper;
         private readonly ILogger<SessionController> _logger;
+        private readonly IPublishEndpoint _publishEndpoint;
 
-        public SessionController(IGenericRepository<Session> repository, IMapper mapper, ILogger<SessionController> logger)
+        public SessionController(IGenericRepository<Session> repository, IMapper mapper, ILogger<SessionController> logger, IPublishEndpoint publishEndpoint)
         {
             _repository = repository;
             _mapper = mapper;
             _logger = logger;
+            _publishEndpoint = publishEndpoint;
         }
 
         [HttpGet]
         public async Task<ActionResult<IReadOnlyList<ReadSessionDto>>> GetAllSession(string orderBy)
         {
-            var users = await _repository.GetAllAsync(orderBy: new SessionsOrderBy().Sorting(orderBy));
+            var session = await _repository.GetAllAsync(orderBy: new SessionsOrderBy().Sorting(orderBy));
 
-            return Ok(_mapper.Map<IReadOnlyList<ReadSessionDto>>(users));
+            return Ok(_mapper.Map<IReadOnlyList<ReadSessionDto>>(session));
         }
 
         [HttpGet("{id:guid}", Name = "GetSession")]
@@ -53,18 +54,18 @@ namespace TraningSessionApi.Controllers
         [HttpPost]
         public async Task<ActionResult<ReadSessionDto>> CreateSession([FromBody] CreateSessionDto createSessionDto)
         {
-            var user = _mapper.Map<Session>(createSessionDto);
+            var session = _mapper.Map<Session>(createSessionDto);
 
-            bool created = await _repository.CreateAsync(user);
+            bool created = await _repository.CreateAsync(session);
 
             if (!created)
             {
-                _logger.LogInformation($"Unable to create {nameof(User)}");
+                _logger.LogInformation($"Unable to create {nameof(Session)}");
                 return BadRequest();
 
             }
 
-            return CreatedAtAction(nameof(GetSession), new { id = user.Id }, _mapper.Map<ReadSessionDto>(user));
+            return CreatedAtAction(nameof(GetSession), new { id = session.Id }, _mapper.Map<ReadSessionDto>(session));
         }
 
         [HttpDelete("{id:guid}")]

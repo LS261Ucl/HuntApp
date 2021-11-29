@@ -1,9 +1,9 @@
 ﻿using System;
 
 
-namespace UserApi.Entities
+namespace TraningSessionApi.Entities
 {
-    public class BaseEntitie
+    public class BaseEntity
     {
         public Guid Id { get; set; }
     }

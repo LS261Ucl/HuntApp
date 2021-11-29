@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace TraningSessionApi.Entities
 {
-    public class Session : BaseEnitity
+    public class Session : BaseEntity
     {
         public DateTime Date { get; set; }
         public int ClayPigions { get; set; }

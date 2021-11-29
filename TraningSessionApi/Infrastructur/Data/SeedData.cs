@@ -1,37 +1,67 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿
+using Bogus;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text.Json;
+using System.Threading;
 using TraningSessionApi.Entities;
 
 namespace TraningSessionApi.Infrastructur.Data
 {
     public class SeedData
     {
-        public static void PrepPopulation(IApplicationBuilder app)
-        {
-            using (var serviceScope = app.ApplicationServices.CreateScope())
-            {
-                SeedDatabase(serviceScope.ServiceProvider.GetService<SessionContext>());
-            }
-        }
+
+        //public static void PrepPopulation(IApplicationBuilder app)
+        //{
+        //    using (var serviceScope = app.ApplicationServices.CreateScope())
+        //    {
+        //        SeedDatabase(serviceScope.ServiceProvider.GetService<SessionContext>());
+        //    }
+        //}
         public static void SeedDatabase(SessionContext context)
         {
+            var claypigions = Faker.Enum.Random<ClaypigionsEnum>();
+            var duble = Faker.RandomNumber.Next(1, 2);
+            var numberOfShorts = Faker.RandomNumber.Next(40, 88);
+            var howWasPigonHit = Faker.Enum.Random<HowWasPigonHitEnum>();
 
-            if (!context.Sessions.Any())
+            List<Session> session = new List<Session>();
+
+            for (int i = 0; i < 5; i++)
             {
-                context.Sessions.AddRange(
-                    new Session() {  ClayPigions = 40, Duble=true, NumberOfShots=24  },
-                    new Session() {ClayPigions= 24, Duble= false, NumberOfShots=20 },
-                    new Session() {ClayPigions=24, Duble=true,NumberOfShots=24 }
+                var fakeSession = new Faker<Session>()
+                    .RuleFor(z => z.ClayPigions, z => (int)claypigions)
+                    .RuleFor(z => z.NumberOfShots, z => numberOfShorts);
 
-                    );  ;
-                context.SaveChanges();
+                var sessionFaker = JsonSerializer.Serialize(fakeSession);
+                session.Add(fakeSession);
+                Thread.Sleep(20);
+                
+
             }
+
+            context.Sessions.AddRange(session);
+            context.SaveChanges();
+
+
+        }
+
+
+        public enum ClaypigionsEnum
+        {
+            lille = 24,
+            stor = 40
+        }
+
+        public enum HowWasPigonHitEnum
+        {
+            Første,
+            Anden,
+            Begge
 
         }
 
     }
 }
+

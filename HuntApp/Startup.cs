@@ -1,25 +1,25 @@
+using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Reflection;
 using UserApi.Application.Interfaces;
+using UserApi.Application.Services;
+using UserApi.Consumer;
 using UserApi.Infrastructure.Data;
 using UserApi.Infrastructure.Data.Repositories;
+
 
 namespace HuntApp
 {
     public class Startup
     {
+        private ServiceSettings _serviceSettings;
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -30,12 +30,30 @@ namespace HuntApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddDbContext<UserContext>(opt => opt.UseInMemoryDatabase("InMem"));
+            
 
             services.AddDbContext<UserContext>(opt =>
             {
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
+
+            services.AddMassTransit(x =>
+            {
+                x.AddConsumer<HuntUserCreatedConsumer>();
+                x.AddConsumer<HuntUserDeltedConsumer>();
+                x.AddConsumer<HuntWeaponCreatedConsumer>();
+                x.AddConsumer<HuntWeaponDeletedConsumer>();
+                x.UsingRabbitMq((context, Config) =>
+                {
+                    var configuration = context.GetRequiredService<IConfiguration>();
+                    string rabbitMQHost = configuration.GetValue<string>("RabbitMq");
+                    Config.Host(rabbitMQHost);
+                    Config.ConfigureEndpoints(context);
+
+                });
+            });
+
+            services.AddMassTransitHostedService();
 
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -44,6 +62,10 @@ namespace HuntApp
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "HuntApp", Version = "v1" });
             });
+
+       
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -67,6 +89,8 @@ namespace HuntApp
                 endpoints.MapControllers();
             });
 
+            SeedData.PrepPopulation(app);
+         
             
         }
     }

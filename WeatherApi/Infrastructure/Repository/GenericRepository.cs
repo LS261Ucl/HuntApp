@@ -11,7 +11,7 @@ using WeatherApi.Infrastructure.Data;
 
 namespace WeatherApi.Infrastructure.Repository
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntitity
+    public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     {
         private readonly WeatherContext _context;
 

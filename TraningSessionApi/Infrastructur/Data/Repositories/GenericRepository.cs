@@ -10,7 +10,7 @@ using TraningSessionApi.Entities;
 
 namespace TraningSessionApi.Infrastructur.Data.Repositories
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : BaseEnitity
+    public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     {
         private readonly SessionContext _context;
 

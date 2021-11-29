@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System;
@@ -15,11 +16,15 @@ using System.Threading.Tasks;
 using WeatherApi.Application.Interface;
 using WeatherApi.Infrastructure.Data;
 using WeatherApi.Infrastructure.Repository;
+using MassTransit;
+using MassTransit.Definition;
+using WeatherApi.Consumers;
 
 namespace WeatherApi
 {
     public class Startup
     {
+     
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -30,7 +35,7 @@ namespace WeatherApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddDbContext<WeatherContext>(opt => opt.UseInMemoryDatabase("InMem"));
+
             services.AddDbContext<WeatherContext>(opt =>
             {
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
@@ -43,30 +48,47 @@ namespace WeatherApi
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WeatherApi", Version = "v1" });
             });
+
+            services.AddMassTransit(x =>
+           {
+               x.AddConsumer<HuntWeatherCreatedConsumer>();
+               x.AddConsumer<HuntWeatherUpdatedConsumer>();
+               x.UsingRabbitMq((context, Config) =>
+               {
+                   var configuration = context.GetRequiredService<IConfiguration>();
+                   string rabbitMQHost = configuration.GetValue<string>("RabbitMq");
+                   Config.Host(rabbitMQHost);
+                   Config.ConfigureEndpoints(context);
+
+               });
+           });
+
+            services.AddMassTransitHostedService();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WeatherApi v1"));
+                if (env.IsDevelopment())
+                {
+                    app.UseDeveloperExceptionPage();
+                    app.UseSwagger();
+                    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WeatherApi v1"));
+                }
+
+                app.UseHttpsRedirection();
+
+                app.UseRouting();
+
+                app.UseAuthorization();
+
+                app.UseEndpoints(endpoints =>
+                {
+                    endpoints.MapControllers();
+                });
+
+                SeedData.PrepPopulation(app);
             }
-
-            app.UseHttpsRedirection();
-
-            app.UseRouting();
-
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
-
-            SeedData.PrepPopulation(app);
-        }
+      
     }
 }

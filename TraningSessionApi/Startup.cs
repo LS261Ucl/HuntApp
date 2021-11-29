@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System;
+using TraningSessionApi.Application.Extensions;
 using TraningSessionApi.Application.Interfaces;
 using TraningSessionApi.Infrastructur.Data;
 using TraningSessionApi.Infrastructur.Data.Repositories;
@@ -27,13 +28,13 @@ namespace TraningSessionApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddDbContext<SessionContext>(opt => opt.UseInMemoryDatabase("InMem"));
-
+            
             services.AddDbContext<SessionContext>(opt =>
             {
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
 
+//            services.AddMassTransitWithRabbitMq();
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddControllers();
@@ -41,6 +42,8 @@ namespace TraningSessionApi
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "TraningSessionApi", Version = "v1" });
             });
+
+            services.AddMassTransitWithRabbitMq();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -64,7 +67,9 @@ namespace TraningSessionApi
                 endpoints.MapControllers();
             });
 
-            SeedData.PrepPopulation(app);
+//            SeedData.PrepPopulation(app);
+
+           
         }
     }
 }
