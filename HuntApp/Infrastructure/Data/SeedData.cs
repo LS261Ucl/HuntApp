@@ -23,7 +23,7 @@ namespace UserApi.Infrastructure.Data
         {
 
             //List<User> users = new List<User>();
-            //List<Weapon> weapons = new List<Weapon>();
+            List<Weapon> weapons = new List<Weapon>();
             //used for add range, but did not work
             for (int i = 0; i < 1; i++)
             {
@@ -61,8 +61,9 @@ namespace UserApi.Infrastructure.Data
                     .RuleFor(j => j.UserId, j => id);
                     var UserWeapons = JsonSerializer.Serialize(userWeapons.Generate());
                     Console.WriteLine(UserWeapons);
-                    context.Weapons.Add(userWeapons);
-                    context.SaveChanges();
+                    weapons.Add(userWeapons);
+                    //context.Weapons.Add(userWeapons);
+                    //context.SaveChanges();
                     Thread.Sleep(10);
 
                 }
@@ -71,6 +72,8 @@ namespace UserApi.Infrastructure.Data
                 context.SaveChanges();
 
             }
+            context.Weapons.AddRange(weapons.ToArray());
+            context.SaveChanges();
 
         }
     }

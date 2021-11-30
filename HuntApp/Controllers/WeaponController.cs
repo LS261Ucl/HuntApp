@@ -18,9 +18,9 @@ namespace UserApi.Controllers
     {
         private readonly IGenericRepository<Weapon> _repository;
         private readonly IMapper _mapper;
-        private readonly ILogger<UsersController> _logger;
+        private readonly ILogger<WeaponController> _logger;
 
-        public WeaponController(IGenericRepository<Weapon> repository, IMapper mapper, ILogger<UsersController> logger)
+        public WeaponController(IGenericRepository<Weapon> repository, IMapper mapper, ILogger<WeaponController> logger)
         {
             _repository = repository;
             _mapper = mapper;
@@ -30,23 +30,23 @@ namespace UserApi.Controllers
         [HttpGet]
         public async Task<ActionResult<IReadOnlyList<ReadWeaponDto>>> GetAllWeapon()
         {
-            var users = await _repository.GetAllAsync();
+            var weapons = await _repository.GetAllAsync();
 
-            return Ok(_mapper.Map<IReadOnlyList<ReadWeaponDto>>(users));
+            return Ok(_mapper.Map<IReadOnlyList<ReadWeaponDto>>(weapons));
         }
 
         [HttpGet("{id:guid}", Name = "GetWeapon")]
         public async Task<ActionResult<ReadWeaponDto>> GetWeapon(Guid id)
         {
-            var userEntity = await _repository.GetAsync(x => x.Id == id);
+            var weaponEntity = await _repository.GetAsync(x => x.Id == id);
 
-            if (userEntity == null)
+            if (weaponEntity == null)
             {
-                _logger.LogInformation($"No {nameof(User)} was found");
+                _logger.LogInformation($"No {nameof(Weapon)} was found");
                 return NotFound();
             }
 
-            return Ok(_mapper.Map<ReadWeaponDto>(userEntity));
+            return Ok(_mapper.Map<ReadWeaponDto>(weaponEntity));
         }
 
         [HttpPost]
@@ -58,7 +58,7 @@ namespace UserApi.Controllers
 
             if (!created)
             {
-                _logger.LogInformation($"Unable to create {nameof(User)}");
+                _logger.LogInformation($"Unable to create {nameof(Weapon)}");
                 return BadRequest();
 
             }

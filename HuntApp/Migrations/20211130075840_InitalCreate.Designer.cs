@@ -10,8 +10,8 @@ using UserApi.Infrastructure.Data;
 namespace UserApi.Migrations
 {
     [DbContext(typeof(UserContext))]
-    [Migration("20211112113846_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20211130075840_InitalCreate")]
+    partial class InitalCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -36,6 +36,9 @@ namespace UserApi.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.ToTable("Users");
@@ -56,9 +59,28 @@ namespace UserApi.Migrations
                     b.Property<string>("Type")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("Weapons");
+                });
+
+            modelBuilder.Entity("UserApi.Entities.Weapon", b =>
+                {
+                    b.HasOne("UserApi.Entities.User", null)
+                        .WithMany("UserWeapon")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("UserApi.Entities.User", b =>
+                {
+                    b.Navigation("UserWeapon");
                 });
 #pragma warning restore 612, 618
         }

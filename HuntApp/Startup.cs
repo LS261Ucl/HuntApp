@@ -19,7 +19,7 @@ namespace HuntApp
 {
     public class Startup
     {
-        private ServiceSettings _serviceSettings;
+        //private ServiceSettings _serviceSettings;
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
