@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MassTransit;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -19,12 +20,14 @@ namespace UserApi.Controllers
         private readonly IGenericRepository<Weapon> _repository;
         private readonly IMapper _mapper;
         private readonly ILogger<WeaponController> _logger;
+        private readonly IPublishEndpoint _publishEndpoint;
 
-        public WeaponController(IGenericRepository<Weapon> repository, IMapper mapper, ILogger<WeaponController> logger)
+        public WeaponController(IGenericRepository<Weapon> repository, IMapper mapper, ILogger<WeaponController> logger, IPublishEndpoint publishEndpoint )
         {
             _repository = repository;
             _mapper = mapper;
             _logger = logger;
+            _publishEndpoint = publishEndpoint;
         }
 
         [HttpGet]
