@@ -34,7 +34,7 @@ namespace TraningSessionApi
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
 
-//            services.AddMassTransitWithRabbitMq();
+ //             services.AddMassTransitWithRabbitMq();
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddControllers();

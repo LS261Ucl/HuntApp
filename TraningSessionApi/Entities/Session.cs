@@ -13,5 +13,7 @@ namespace TraningSessionApi.Entities
         public int NumberOfShots { get; set; }
         public int HowWasPigonHit { get; set; }
 
+        
+
     }
 }

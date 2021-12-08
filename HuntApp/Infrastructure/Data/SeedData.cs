@@ -25,7 +25,7 @@ namespace UserApi.Infrastructure.Data
             //List<User> users = new List<User>();
             List<Weapon> weapons = new List<Weapon>();
             //used for add range, but did not work
-            for (int i = 0; i < 1; i++)
+            for (int i = 0; i < 10; i++)
             {
                 var id = Guid.NewGuid(); 
                 var userId = Guid.NewGuid();

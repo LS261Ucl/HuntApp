@@ -32,6 +32,7 @@ namespace UserApi.Controllers
         [HttpGet]
         public async Task<ActionResult<IReadOnlyList<ReadUserDto>>> GetAllUser(string orderBy)
         {
+            _logger.LogInformation("Skidtet virker ikke");
             var users = await _userRepository.GetAllAsync(orderBy: new UserOrderBy().Sorting(orderBy));
 
             return Ok(_mapper.Map<IReadOnlyList<ReadUserDto>>(users));
@@ -66,6 +67,30 @@ namespace UserApi.Controllers
             }
 
             return CreatedAtAction(nameof(GetUser), new { id = user.Id }, _mapper.Map<ReadUserDto>(user));
+        }
+
+        [HttpPut("{id; guid}")]
+        public async Task<ActionResult> UpdateUser(Guid id, UpdateUserDto updateUserDto)
+        {
+            var userToUpdate = await _userRepository.GetAsync(x => x.Id == id);
+
+            if(userToUpdate == null)
+            {
+                _logger.LogInformation($"No {nameof(User)} was found whit that id");
+                return NotFound();
+            }
+
+            _mapper.Map(updateUserDto, userToUpdate);
+
+            bool updated = await _userRepository.UpdateAsync(userToUpdate);
+
+            if(!updated)
+            {
+                _logger.LogInformation($"Error updating {nameof(User)} id : {id}");
+                return BadRequest();
+            }
+
+            return NoContent();
         }
 
         [HttpDelete("{id:guid}")]
